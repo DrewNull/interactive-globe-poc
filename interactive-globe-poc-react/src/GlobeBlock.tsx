@@ -54,7 +54,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
             () => onWindowResize(camera, renderer),
             false
         )
-        animate(createScene(globe), autoRotate)
+        animate(createScene(globe))
     }, [])
     return (
         <>
@@ -95,8 +95,8 @@ export function GlobeBlock(props: GlobeBlockProps) {
         controls.maxPolarAngle = Math.PI - Math.PI / 3
         controls.minPolarAngle = Math.PI / 3
     }
-    function animate(scene: Scene, autoRotate: boolean) {
-        requestAnimationFrame(() => animate(scene, autoRotate))
+    function animate(scene: Scene) {
+        requestAnimationFrame(() => animate(scene))
         if (autoRotate) {
             globe.rotation.y += props.idleRotationSpeed ?? 0
         }
