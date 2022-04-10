@@ -4,25 +4,29 @@ import { GlobeBlock } from './GlobeBlock'
 import logo from './logo.svg'
 
 function App() {
-  return (
-    <div className='App'>
-      {/* <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Learn React
-        </a>
-      </header> */}
-      <GlobeBlock />
-    </div>
-  )
+    return (
+        <div className='App'>
+            <GlobeBlock
+                idleRotationSpeed={0.001}
+                imageOffsetLng={90}
+                imageUrl='images/2_no_clouds_4k.jpg'
+                markers={[
+                    {
+                        image: 'images/web-map-icons_dc-on.png',
+                        lat: 41.881832,
+                        lng: -87.623177,
+                        city: 'Chicago',
+                    },
+                    {
+                        image: 'images/web-map-icons_dc-on.png',
+                        lat: 29.5657,
+                        lng: 106.5512,
+                        city: 'Chongqing',
+                    },
+                ]}
+            />
+        </div>
+    )
 }
 
 export default App

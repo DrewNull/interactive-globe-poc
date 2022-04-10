@@ -19,33 +19,46 @@ import {
     WebGLRenderer,
 } from 'three'
 
-export function GlobeBlock() {
+export interface GlobeMarkerData {
+    city: string
+    lat: number
+    lng: number
+    image: string
+}
+
+export interface GlobeBlockProps {
+    idleRotationSpeed: number
+    /** Longitude offset in degress to account for globe images that are not left-aligned to the prime meridian */
+    imageOffsetLng: number
+    imageUrl: string
+    markers: Array<GlobeMarkerData>
+}
+
+export function GlobeBlock(props: GlobeBlockProps) {
     const canvasRef = useRef<HTMLDivElement>(null)
     let autoRotate = true
+    const globeRadius = 1
+    const renderer = new WebGLRenderer()
+    const camera = createCamera()
+    const globe = createGlobe(globeRadius)
+    const markers = createMarkers(globeRadius)
+    markers.forEach((marker) => globe.add(marker))
+    setRendererSize(renderer)
+    addOrbitControls(camera, renderer)
     useEffect(() => {
-        const radius = 1
-        const camera = createCamera()
-        const renderer = new WebGLRenderer()
-        const globe = createGlobe(radius)
-        const markers = createMarkers(radius)
-        markers.forEach((marker) => globe.add(marker))
-        setRendererSize(renderer)
         if (canvasRef.current && canvasRef.current.childNodes.length < 1) {
             canvasRef.current.appendChild(renderer.domElement)
         }
-        addOrbitControls(camera, renderer)
-        const raycaster = new Raycaster()
-        const mouse = new Vector2()
         window.addEventListener(
             'resize',
             () => onWindowResize(camera, renderer),
             false
         )
-        animate(renderer, createScene(globe), camera, globe)
+        animate(createScene(globe))
     }, [])
     return (
         <>
-            Hello World
+            Globe Demo
             <div
                 style={{
                     height: '0',
@@ -57,9 +70,15 @@ export function GlobeBlock() {
             >
                 <div
                     ref={canvasRef}
-                    onMouseDown={onMouseDown}
-                    onMouseOut={onMouseOut}
-                    onMouseOver={onMouseOver}
+                    onMouseDown={(event) =>
+                        onMouseDown(event, renderer, globe, markers)
+                    }
+                    onMouseOut={() => {
+                        autoRotate = true
+                    }}
+                    onMouseOver={() => {
+                        autoRotate = false
+                    }}
                     style={{
                         height: '100%',
                         position: 'absolute',
@@ -76,15 +95,10 @@ export function GlobeBlock() {
         controls.maxPolarAngle = Math.PI - Math.PI / 3
         controls.minPolarAngle = Math.PI / 3
     }
-    function animate(
-        renderer: WebGLRenderer,
-        scene: Scene,
-        camera: PerspectiveCamera,
-        globe: Mesh<SphereGeometry, MeshBasicMaterial>
-    ) {
-        requestAnimationFrame(() => animate(renderer, scene, camera, globe))
+    function animate(scene: Scene) {
+        requestAnimationFrame(() => animate(scene))
         if (autoRotate) {
-            globe.rotation.y += 0.00025
+            globe.rotation.y += props.idleRotationSpeed ?? 0
         }
         renderer.render(scene, camera)
     }
@@ -93,13 +107,14 @@ export function GlobeBlock() {
         camera.position.z = 5
         return camera
     }
-    function createGlobe(radius: number) {
-        const geometry = new SphereGeometry(radius, 64, 64)
-        const material = new MeshBasicMaterial()
-        const textureLoader = new TextureLoader()
-        material.map = textureLoader.load('images/2_no_clouds_4k.jpg')
-        const globe = new Mesh(geometry, material)
-        globe.rotation.y = MathUtils.degToRad(-90)
+    function createGlobe(globeRadius: number) {
+        const globe = new Mesh(
+            new SphereGeometry(globeRadius, 64, 64),
+            new MeshBasicMaterial({
+                map: new TextureLoader().load(props.imageUrl),
+            })
+        )
+        globe.rotation.y = MathUtils.degToRad(-1 * props.imageOffsetLng)
         return globe
     }
     function createScene(globe: Mesh<SphereGeometry, MeshBasicMaterial>) {
@@ -108,49 +123,53 @@ export function GlobeBlock() {
         scene.add(new AmbientLight(0xffffff))
         return scene
     }
-    function createMarker(data: MarkerData, radius: number) {
+    function createMarker(data: GlobeMarkerData, globeRadius: number) {
         const spriteScale = 0.125
-        const map = new TextureLoader().load(data.image)
-        const material = new SpriteMaterial({ map: map })
-        const sprite = new Sprite(material)
-        // TODO: Remove. Get a new earth image that is left-aligned to the prime meridian
-        data.lng = data.lng + 90
-        var spherical = new Spherical(
-            radius + spriteScale / 2,
-            Math.PI * (0.5 - data.lat / 180),
-            Math.PI * (data.lng / 180)
+        const lng = data.lng + props.imageOffsetLng
+        const vector = new Vector3()
+        vector.setFromSpherical(
+            new Spherical(
+                globeRadius + spriteScale / 2,
+                Math.PI * (0.5 - data.lat / 180),
+                Math.PI * (lng / 180)
+            )
         )
-        var vector = new Vector3()
-        vector.setFromSpherical(spherical)
+        const sprite = new Sprite(
+            new SpriteMaterial({
+                map: new TextureLoader().load(data.image),
+            })
+        )
         sprite.position.set(vector.x, vector.y, vector.z)
         sprite.scale.set(spriteScale, spriteScale, spriteScale)
+        sprite.userData = {
+            city: data.city,
+        }
         return sprite
     }
-    function createMarkers(radius: number) {
-        return getMarkersData().map((data) => createMarker(data, radius))
+    function createMarkers(globeRadius: number) {
+        return props.markers.map((data) => createMarker(data, globeRadius))
     }
-    function getMarkersData(): Array<MarkerData> {
-        return [
-            {
-                image: 'images/web-map-icons_dc-on.png',
-                lat: 41.881832,
-                lng: -87.623177,
-            },
-            {
-                image: 'images/web-map-icons_dc-on.png',
-                lat: 29.5657,
-                lng: 106.5512,
-            },
-        ]
-    }
-    function onMouseDown(event: any) {
-        console.log('onMouseDown')
-    }
-    function onMouseOut(event: any) {
-        autoRotate = true
-    }
-    function onMouseOver(event: any) {
-        autoRotate = false
+    function onMouseDown(
+        event: any,
+        renderer: WebGLRenderer,
+        globe: Mesh<SphereGeometry, MeshBasicMaterial>,
+        markers: Array<Sprite>
+    ) {
+        event.preventDefault()
+        const raycaster = new Raycaster()
+        const mouse = new Vector2()
+        const rect = event.target.getBoundingClientRect()
+        const element = renderer.domElement
+        mouse.x = ((event.clientX - rect.left) / element.clientWidth) * 2 - 1
+        mouse.y = -((event.clientY - rect.top) / element.clientHeight) * 2 + 1
+        raycaster.setFromCamera(mouse, camera)
+        const intersects = raycaster
+            .intersectObjects([globe, ...markers], false)
+            .filter((intersect) => intersect.object.type === 'Sprite')
+        if (intersects.length > 0) {
+            console.log(intersects[0])
+            alert(intersects[0].object.userData.city)
+        }
     }
     function onWindowResize(
         camera: PerspectiveCamera,
@@ -164,10 +183,4 @@ export function GlobeBlock() {
             renderer.setSize(window.innerWidth, window.innerWidth / 2)
         }
     }
-}
-
-type MarkerData = {
-    lat: number
-    lng: number
-    image: string
 }
