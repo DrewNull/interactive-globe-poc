@@ -5,6 +5,7 @@ import { GlobeBlock } from './GlobeBlock'
 function App() {
     return (
         <div className='App'>
+            <h1>Three.js Interactive Globe Demo</h1>
             <GlobeBlock
                 idleRotationSpeed={0.001}
                 imageOffsetLng={90}

@@ -58,37 +58,34 @@ export function GlobeBlock(props: GlobeBlockProps) {
         animate(createScene(globe))
     }, [])
     return (
-        <>
-            <h1>Globe Demo</h1>
+        <div
+            style={{
+                backgroundColor: '#eee',
+                height: '0',
+                margin: 'auto',
+                paddingBottom: '50%',
+                position: 'relative',
+                width: '100%',
+            }}
+        >
             <div
+                ref={canvasRef}
+                onMouseDown={(event) =>
+                    onMouseDown(event, camera, renderer, globe, markers)
+                }
+                onMouseOut={() => {
+                    autoRotate = true
+                }}
+                onMouseOver={() => {
+                    autoRotate = false
+                }}
                 style={{
-                    backgroundColor: '#eee',
-                    height: '0',
-                    margin: 'auto',
-                    paddingBottom: '50%',
-                    position: 'relative',
+                    height: '100%',
+                    position: 'absolute',
                     width: '100%',
                 }}
-            >
-                <div
-                    ref={canvasRef}
-                    onMouseDown={(event) =>
-                        onMouseDown(event, camera, renderer, globe, markers)
-                    }
-                    onMouseOut={() => {
-                        autoRotate = true
-                    }}
-                    onMouseOver={() => {
-                        autoRotate = false
-                    }}
-                    style={{
-                        height: '100%',
-                        position: 'absolute',
-                        width: '100%',
-                    }}
-                ></div>
-            </div>
-        </>
+            ></div>
+        </div>
     )
     function addOrbitControls(camera: Camera, renderer: WebGLRenderer) {
         const controls = new OrbitControls(camera, renderer.domElement)
