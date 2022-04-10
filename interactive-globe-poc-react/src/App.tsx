@@ -1,7 +1,6 @@
 import React from 'react'
 import './App.css'
 import { GlobeBlock } from './GlobeBlock'
-import logo from './logo.svg'
 
 function App() {
     return (

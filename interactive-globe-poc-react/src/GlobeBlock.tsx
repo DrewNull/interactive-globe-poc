@@ -47,14 +47,14 @@ export function GlobeBlock(props: GlobeBlockProps) {
     setRendererSize(renderer)
     addOrbitControls(camera, renderer)
     useEffect(() => {
-        if (canvasRef.current && canvasRef.current.childNodes.length < 1) {
-            canvasRef.current.appendChild(renderer.domElement)
-        }
         window.addEventListener(
             'resize',
             () => onWindowResize(camera, renderer),
             false
         )
+        if (canvasRef.current && canvasRef.current.childNodes.length < 1) {
+            canvasRef.current.appendChild(renderer.domElement)
+        }
         animate(createScene(globe))
     }, [])
     return (
