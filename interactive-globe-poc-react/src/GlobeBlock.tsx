@@ -21,9 +21,9 @@ import {
 
 export interface GlobeMarkerData {
     city: string
+    image: string
     lat: number
     lng: number
-    image: string
 }
 
 export interface GlobeBlockProps {
@@ -54,7 +54,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
             () => onWindowResize(camera, renderer),
             false
         )
-        animate(createScene(globe))
+        animate(createScene(globe), autoRotate)
     }, [])
     return (
         <>
@@ -71,7 +71,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
                 <div
                     ref={canvasRef}
                     onMouseDown={(event) =>
-                        onMouseDown(event, renderer, globe, markers)
+                        onMouseDown(event, camera, renderer, globe, markers)
                     }
                     onMouseOut={() => {
                         autoRotate = true
@@ -95,8 +95,8 @@ export function GlobeBlock(props: GlobeBlockProps) {
         controls.maxPolarAngle = Math.PI - Math.PI / 3
         controls.minPolarAngle = Math.PI / 3
     }
-    function animate(scene: Scene) {
-        requestAnimationFrame(() => animate(scene))
+    function animate(scene: Scene, autoRotate: boolean) {
+        requestAnimationFrame(() => animate(scene, autoRotate))
         if (autoRotate) {
             globe.rotation.y += props.idleRotationSpeed ?? 0
         }
@@ -151,6 +151,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
     }
     function onMouseDown(
         event: any,
+        camera: Camera,
         renderer: WebGLRenderer,
         globe: Mesh<SphereGeometry, MeshBasicMaterial>,
         markers: Array<Sprite>
