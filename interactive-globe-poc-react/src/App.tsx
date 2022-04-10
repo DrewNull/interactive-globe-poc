@@ -18,12 +18,13 @@ function App() {
                         city: 'Chicago',
                     },
                     {
-                        image: 'images/web-map-icons_dc-on.png',
+                        image: 'images/web-map-icons_ent-lan-wlan-ruckus-on.png',
                         lat: 29.5657,
                         lng: 106.5512,
                         city: 'Chongqing',
                     },
                 ]}
+                markerScale={0.175}
             />
         </div>
     )

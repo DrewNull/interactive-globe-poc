@@ -32,6 +32,7 @@ export interface GlobeBlockProps {
     imageOffsetLng: number
     imageUrl: string
     markers: Array<GlobeMarkerData>
+    markerScale: number
 }
 
 export function GlobeBlock(props: GlobeBlockProps) {
@@ -124,12 +125,12 @@ export function GlobeBlock(props: GlobeBlockProps) {
         return scene
     }
     function createMarker(data: GlobeMarkerData, globeRadius: number) {
-        const spriteScale = 0.125
+        const markerScale = props.markerScale ?? 1
         const lng = data.lng + props.imageOffsetLng
         const vector = new Vector3()
         vector.setFromSpherical(
             new Spherical(
-                globeRadius + spriteScale / 2,
+                globeRadius + markerScale / 2,
                 Math.PI * (0.5 - data.lat / 180),
                 Math.PI * (lng / 180)
             )
@@ -140,7 +141,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
             })
         )
         sprite.position.set(vector.x, vector.y, vector.z)
-        sprite.scale.set(spriteScale, spriteScale, spriteScale)
+        sprite.scale.set(markerScale, markerScale, markerScale)
         sprite.userData = {
             city: data.city,
         }
