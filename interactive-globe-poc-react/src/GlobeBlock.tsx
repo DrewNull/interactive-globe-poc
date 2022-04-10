@@ -59,7 +59,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
     }, [])
     return (
         <>
-            Globe Demo
+            <h1>Globe Demo</h1>
             <div
                 style={{
                     backgroundColor: '#eee',
