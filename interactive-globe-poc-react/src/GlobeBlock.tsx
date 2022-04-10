@@ -39,7 +39,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
     const canvasRef = useRef<HTMLDivElement>(null)
     let autoRotate = true
     const globeRadius = 1
-    const renderer = new WebGLRenderer()
+    const renderer = new WebGLRenderer({ alpha: true })
     const camera = createCamera()
     const globe = createGlobe(globeRadius)
     const markers = createMarkers(globeRadius)
@@ -62,6 +62,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
             Globe Demo
             <div
                 style={{
+                    backgroundColor: '#eee',
                     height: '0',
                     margin: 'auto',
                     paddingBottom: '50%',
@@ -121,7 +122,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
     function createScene(globe: Mesh<SphereGeometry, MeshBasicMaterial>) {
         const scene = new Scene()
         scene.add(globe)
-        scene.add(new AmbientLight(0xffffff))
+        scene.add(new AmbientLight('#fff'))
         return scene
     }
     function createMarker(data: GlobeMarkerData, globeRadius: number) {
