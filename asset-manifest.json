@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/interactive-globe-poc-react/static/css/main.073c9b0a.css",
+    "main.js": "/interactive-globe-poc-react/static/js/main.d2018555.js",
+    "static/js/377.4a1e371d.chunk.js": "/interactive-globe-poc-react/static/js/377.4a1e371d.chunk.js",
+    "service-worker.js": "/interactive-globe-poc-react/service-worker.js",
+    "index.html": "/interactive-globe-poc-react/index.html",
+    "main.073c9b0a.css.map": "/interactive-globe-poc-react/static/css/main.073c9b0a.css.map",
+    "main.d2018555.js.map": "/interactive-globe-poc-react/static/js/main.d2018555.js.map",
+    "377.4a1e371d.chunk.js.map": "/interactive-globe-poc-react/static/js/377.4a1e371d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.d2018555.js"
+  ]
+}
