@@ -31,8 +31,8 @@ function App() {
                     using{' '}
                     <a
                         href='https://threejs.org'
-                        target='_blank'
                         rel='noopener noreferrer'
+                        target='_blank'
                     >
                         Three.js
                     </a>
@@ -43,6 +43,15 @@ function App() {
                     extended with other features, such as different geometry.
                     Note that the earth globe image, among other things, would
                     be authorable in the CMS.
+                </p>
+                <p>
+                    <a
+                        href='https://github.com/DrewNull/interactive-globe-poc/tree/main/interactive-globe-poc-react'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                    >
+                        Source code on GitHub
+                    </a>
                 </p>
                 <h4>Controls</h4>
                 <p>
