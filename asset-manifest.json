@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/interactive-globe-poc/static/css/main.073c9b0a.css",
-    "main.js": "/interactive-globe-poc/static/js/main.3d43a9e0.js",
+    "main.css": "/interactive-globe-poc/static/css/main.7a7b926c.css",
+    "main.js": "/interactive-globe-poc/static/js/main.f408f8c8.js",
     "static/js/377.4a1e371d.chunk.js": "/interactive-globe-poc/static/js/377.4a1e371d.chunk.js",
     "service-worker.js": "/interactive-globe-poc/service-worker.js",
     "index.html": "/interactive-globe-poc/index.html",
-    "main.073c9b0a.css.map": "/interactive-globe-poc/static/css/main.073c9b0a.css.map",
-    "main.3d43a9e0.js.map": "/interactive-globe-poc/static/js/main.3d43a9e0.js.map",
+    "main.7a7b926c.css.map": "/interactive-globe-poc/static/css/main.7a7b926c.css.map",
+    "main.f408f8c8.js.map": "/interactive-globe-poc/static/js/main.f408f8c8.js.map",
     "377.4a1e371d.chunk.js.map": "/interactive-globe-poc/static/js/377.4a1e371d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.073c9b0a.css",
-    "static/js/main.3d43a9e0.js"
+    "static/css/main.7a7b926c.css",
+    "static/js/main.f408f8c8.js"
   ]
 }
