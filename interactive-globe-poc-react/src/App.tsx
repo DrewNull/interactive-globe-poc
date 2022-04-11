@@ -14,13 +14,13 @@ function App() {
                         image: '/interactive-globe-poc/images/web-map-icons_dc-on.png',
                         lat: 41.881832,
                         lng: -87.623177,
-                        city: 'Chicago, USA',
+                        city: 'Chicago, USA. Lorem ipsum...',
                     },
                     {
                         image: '/interactive-globe-poc/images/web-map-icons_ent-lan-wlan-ruckus-on.png',
                         lat: 29.5657,
                         lng: 106.5512,
-                        city: 'Chongqing, China',
+                        city: 'Chongqing, China. Lorem ipsum...',
                     },
                 ]}
                 markerScale={0.175}
@@ -62,7 +62,7 @@ function App() {
                 </p>
                 <h4>Markers</h4>
                 <p>
-                    Click the markers for more info.Presently, the markers open
+                    Click the markers for more info. Presently, the markers open
                     an alert dialog when clicked, showing the city's name. This
                     functionality is only to illustrate that the 3D globe can
                     interact with the JavaScript of the parent page. In
