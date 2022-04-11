@@ -36,13 +36,10 @@ function App() {
                     >
                         Three.js
                     </a>
-                    . This was done in Three.js because, although there are many
-                    OOB globe UI components, none can be configured with
-                    something <em>other</em> than a globe. The approach taken by
-                    this POC is to establish a Three.js foundation that can be
-                    extended with other features, such as different geometry.
-                    Note that the earth globe image, among other things, would
-                    be authorable in the CMS.
+                    . The approach taken by this POC is to establish a Three.js
+                    foundation that can be extended with other features, such as
+                    different geometry and behaviors. Note that the earth globe
+                    image, among other things, would be authorable in the CMS.
                 </p>
                 <p>
                     <a
