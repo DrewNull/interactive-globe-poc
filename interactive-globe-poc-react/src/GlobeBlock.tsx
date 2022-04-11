@@ -40,6 +40,9 @@ export function GlobeBlock(props: GlobeBlockProps) {
     let autoRotate = true
     const globeRadius = 1
     const renderer = new WebGLRenderer({ alpha: true })
+    if (window) {
+        renderer.setPixelRatio(window.devicePixelRatio * 4)
+    }
     const camera = createCamera()
     const globe = createGlobe(globeRadius)
     const markers = createMarkers(globeRadius)
@@ -47,6 +50,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
     setRendererSize(renderer)
     addOrbitControls(camera, renderer)
     useEffect(() => {
+        onWindowResize(camera, renderer)
         window.addEventListener(
             'resize',
             () => onWindowResize(camera, renderer),
@@ -60,10 +64,10 @@ export function GlobeBlock(props: GlobeBlockProps) {
     return (
         <div
             style={{
-                backgroundColor: '#eee',
+                backgroundColor: 'transparent',
                 height: '0',
                 margin: 'auto',
-                paddingBottom: '50%',
+                paddingBottom: '100%',
                 position: 'relative',
                 width: '100%',
             }}
@@ -102,7 +106,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
         renderer.render(scene, camera)
     }
     function createCamera() {
-        const camera = new PerspectiveCamera(30, 2, 0.1, 1000)
+        const camera = new PerspectiveCamera(30, 1, 0.1, 1000)
         camera.position.z = 5
         return camera
     }
@@ -179,8 +183,10 @@ export function GlobeBlock(props: GlobeBlockProps) {
         setRendererSize(renderer)
     }
     function setRendererSize(renderer: WebGLRenderer) {
-        if (window) {
-            renderer.setSize(window.innerWidth, window.innerWidth / 2)
+        console.log('renderer.domElement', renderer.domElement)
+        const parent: any = renderer.domElement.parentElement
+        if (parent && window) {
+            renderer.setSize(parent.clientWidth, parent.clientHeight, true)
         }
     }
 }
