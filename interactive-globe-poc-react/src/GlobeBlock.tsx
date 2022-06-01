@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { useEffect, useRef } from "react"
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
 import {
     AmbientLight,
     Camera,
@@ -94,7 +94,6 @@ export function GlobeBlock(props: GlobeBlockProps) {
     function addOrbitControls(camera: Camera, renderer: WebGLRenderer) {
         const controls = new OrbitControls(camera, renderer.domElement)
         controls.enablePan = false
-        controls.enableZoom = false
         controls.maxPolarAngle = Math.PI - Math.PI / 3
         controls.minPolarAngle = Math.PI / 3
     }
