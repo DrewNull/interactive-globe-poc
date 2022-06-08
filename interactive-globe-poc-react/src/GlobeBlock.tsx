@@ -94,8 +94,8 @@ export function GlobeBlock(props: GlobeBlockProps) {
     function addOrbitControls(camera: Camera, renderer: WebGLRenderer) {
         const controls = new OrbitControls(camera, renderer.domElement)
         controls.enablePan = false
-        controls.maxPolarAngle = Math.PI - Math.PI / 3
-        controls.minPolarAngle = Math.PI / 3
+        // controls.maxPolarAngle = Math.PI - Math.PI / 3
+        // controls.minPolarAngle = Math.PI / 3
     }
     function animate(scene: Scene) {
         requestAnimationFrame(() => animate(scene))
@@ -170,8 +170,7 @@ export function GlobeBlock(props: GlobeBlockProps) {
             .intersectObjects([globe, ...markers], false)
             .filter((intersect) => intersect.object.type === 'Sprite')
         if (intersects.length > 0) {
-            console.log(intersects[0])
-            alert(intersects[0].object.userData.city)
+            console.log(intersects[0].object.userData.city, intersects[0])
         }
     }
     function onWindowResize(

@@ -1,29 +1,36 @@
-import React from 'react'
-import './App.css'
-import { GlobeBlock } from './GlobeBlock'
+import React from "react"
+import "./App.css"
+import { GlobeBlock, GlobeMarkerData } from "./GlobeBlock"
 
 function App() {
+    const chicago: GlobeMarkerData = {
+        image: '/interactive-globe-poc/images/web-map-icons_dc-on.png',
+        lat: 41.881832,
+        lng: -87.623177,
+        city: 'Chicago, USA. Lorem ipsum...',
+    }
+    const chongqing: GlobeMarkerData = {
+        image: '/interactive-globe-poc/images/web-map-icons_ent-lan-wlan-ruckus-on.png',
+        lat: 29.5657,
+        lng: 106.5512,
+        city: 'Chongqing, China. Lorem ipsum...',
+    }
+    const markers = [...Array(500)].map((x, i) => {
+        return {
+            city: `Marker #${i + 1}`,
+            image: '/interactive-globe-poc/images/web-map-icons_dc-on.png',
+            lat: Math.random() * 180 - 90,
+            lng: Math.random() * 360 - 180,
+        } as GlobeMarkerData
+    })
     return (
         <div className='App'>
             <GlobeBlock
                 idleRotationSpeed={0.001}
                 imageOffsetLng={90}
                 imageUrl='/interactive-globe-poc/images/2_no_clouds_4k.jpg'
-                markers={[
-                    {
-                        image: '/interactive-globe-poc/images/web-map-icons_dc-on.png',
-                        lat: 41.881832,
-                        lng: -87.623177,
-                        city: 'Chicago, USA. Lorem ipsum...',
-                    },
-                    {
-                        image: '/interactive-globe-poc/images/web-map-icons_ent-lan-wlan-ruckus-on.png',
-                        lat: 29.5657,
-                        lng: 106.5512,
-                        city: 'Chongqing, China. Lorem ipsum...',
-                    },
-                ]}
-                markerScale={0.175}
+                markers={markers}
+                markerScale={0.05}
             />
             <div className='description'>
                 <p>
