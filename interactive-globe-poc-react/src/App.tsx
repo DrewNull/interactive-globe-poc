@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef, useState } from "react"
 import "./App.css"
 import { GlobeBlock, GlobeMarkerData } from "./GlobeBlock"
 
@@ -15,24 +15,37 @@ function App() {
         lng: 106.5512,
         city: 'Chongqing, China. Lorem ipsum...',
     }
-    const markers = [...Array(500)].map((x, i) => {
-        return {
-            city: `Marker #${i + 1}`,
-            image: '/interactive-globe-poc/images/web-map-icons_dc-on.png',
-            lat: Math.random() * 180 - 90,
-            lng: Math.random() * 360 - 180,
-        } as GlobeMarkerData
-    })
+    const [markers, setMarkers] = useState<GlobeMarkerData[]>()
+    const markerCountInputRef = useRef<HTMLInputElement>(null)
+    const [loading, setLoading] = useState<boolean>(false)
     return (
         <div className='App'>
-            <GlobeBlock
-                idleRotationSpeed={0.001}
-                imageOffsetLng={90}
-                imageUrl='/interactive-globe-poc/images/2_no_clouds_4k.jpg'
-                markers={markers}
-                markerScale={0.05}
-            />
+            <div>
+                {!loading && (
+                    <GlobeBlock
+                        idleRotationSpeed={0.001}
+                        imageOffsetLng={90}
+                        imageUrl='/interactive-globe-poc/images/2_no_clouds_4k.jpg'
+                        markers={markers ?? []}
+                        markerScale={0.05}
+                    />
+                )}
+            </div>
             <div className='description'>
+                <form
+                    onSubmit={(event) => {
+                        event.preventDefault()
+                        loadMarkers(
+                            parseInt(markerCountInputRef.current?.value ?? '0')
+                        )
+                    }}
+                >
+                    <label>
+                        Marker Count:{' '}
+                        <input ref={markerCountInputRef} type='number' />
+                    </label>
+                    <button type='submit'>Submit</button>
+                </form>
                 <p>
                     This is a simple interactive globe proof-of-concept demo
                     using{' '}
@@ -82,6 +95,25 @@ function App() {
             </div>
         </div>
     )
+    function loadMarkers(count: number) {
+        if (count > 9999) {
+            alert("That's not a good idea...")
+            return
+        }
+        setLoading(true)
+        const newMarkers = [...Array(count)].map((x, i) => {
+            return {
+                city: `Marker #${i + 1}`,
+                image: '/interactive-globe-poc/images/web-map-icons_dc-on.png',
+                lat: Math.random() * 180 - 90,
+                lng: Math.random() * 360 - 180,
+            } as GlobeMarkerData
+        })
+        setMarkers((prev) => newMarkers)
+        setTimeout(() => {
+            setLoading(false)
+        }, 0)
+    }
 }
 
 export default App
